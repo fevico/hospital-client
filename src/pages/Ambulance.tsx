@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Siren, MapPin, Navigation } from 'lucide-react';
 import toast from 'react-hot-toast';
-
+import {API_BASE} from "@/api/api"
 // Fetch function
 const fetchAmbulances = async () => {
-  const res = await fetch('/api/ambulances');
+  const res = await fetch(`${API_BASE}/api/ambulances`);
   if (!res.ok) throw new Error('Failed to fetch ambulances');
   return res.json();
 };
@@ -41,7 +41,7 @@ export default function Ambulances() {
     const randomLng = 3.30 + Math.random() * 0.15; // ~3.30 to 3.45
 
     try {
-      const res = await fetch(`/api/ambulances/${ambulance.id}/location`, {
+      const res = await fetch(`${API_BASE}/api/ambulances/${ambulance.id}/location`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
