@@ -9,6 +9,15 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000', // your NestJS port
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api'), // optional
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
