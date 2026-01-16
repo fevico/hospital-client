@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+# GIS-Integrated Hospital Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack mini-dashboard application that visualizes hospital locations and ambulance proximity using spatial data and GIS techniques. Built as part of a technical assessment to demonstrate full-stack skills with React, Leaflet, NestJS, TypeORM, PostgreSQL + PostGIS, and TanStack Query.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Spatial Database** with PostgreSQL + PostGIS
+  - At least 10 mock hospitals and 5 ambulances seeded in Lagos, Nigeria area
+  - Ambulance locations can be manually updated via API to simulate movement
 
-## React Compiler
+- **Interactive Map** (Frontend)
+  - React + Leaflet map displaying all hospitals as clickable markers
+  - Clicking a hospital marker shows hospital details + nearest ambulance (with distance in km)
+  - Uses spatial backend query for accurate proximity calculation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Proximity Logic**
+  - Backend calculates nearest ambulance using PostGIS spatial functions (`ST_Distance` with geography type)
+  - Cached results (Redis) for repeated queries → no repeated DB hits (satisfies "Grit Challenge")
 
-## Expanding the ESLint configuration
+- **Ambulance Management**
+  - List view of all ambulances with status and current location
+  - "Move Randomly" button on each ambulance card → updates coordinates via API (simulates real-time movement)
+  - Updates reflect immediately in the list and affect nearest-ambulance calculations on the map
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend Tech**
+  - React (Vite) + TypeScript
+  - Leaflet for mapping
+  - TanStack Query (React Query) for data fetching & caching
+  - Shadcn/ui + Tailwind CSS for modern UI
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Navigate to frontend folder:Bashcd client
+2. Install dependencies:Bashnpm install
+3. create .env file and add this VITE_API_BASE_URL
+4. Start development server:Bashnpm run devOpen: http://localhost:5173Features:
+Dashboard (/): Interactive Leaflet map with hospital markers
+Hospitals fetched via TanStack Query from /api/hospitals
+Click any hospital marker → popup shows details + nearest ambulance (calculated via backend spatial query)
+Nearest result cached in backend (Redis) → repeated clicks are fast
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Hospitals (/hospitals): Card list of all hospitals with name, type, capacity, address
+Ambulances (/ambulances): Card list of ambulances with status and location
+Each card has "Move Randomly" button → sends PUT request to backend to update coordinates
+List auto-refreshes after update → new position visible immediately
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+How to Test Core Features
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+View hospitals on map → Dashboard page → markers appear
+Click hospital → see popup with nearest ambulance distance (uses PostGIS ST_Distance)
+Repeat click on same hospital → fast response (cached in backend)
+Update ambulance position → Ambulances page → click "Move Randomly" on any ambulance
+See toast feedback
+Go back to Dashboard → click nearby hospitals → distances should have changed
+

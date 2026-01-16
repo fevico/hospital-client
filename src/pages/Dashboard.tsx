@@ -36,9 +36,6 @@ console.log(
           <MapContainer center={[6.5244, 3.3792]} zoom={11} style={{ height: '100%', width: '100%' }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="..." />
 
-            {/* {hospitals?.map((hospital) => {
-              const [lng, lat] = hospital.location.coordinates; */}
-
 {hospitals?.map((hospital) => {
   // 1. Early exit if no location at all
   if (!hospital?.location) {
