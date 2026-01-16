@@ -12,17 +12,7 @@ export default function Dashboard() {
   const [selectedHospitalId, setSelectedHospitalId] = useState<number | null>(null);
   const { data: nearest, isLoading: nearestLoading, error: nearestError } = useNearestAmbulance(selectedHospitalId);
 
-  console.log("Nearest hospital", nearest)
 
-console.log(
-  "All hospitals locations:",
-  hospitals?.map(h => ({
-    id: h.id,
-    name: h.name,
-    hasLocation: !!h.location,
-    coordsLength: h.location?.coordinates?.length ?? "missing"
-  }))
-); 
 
   return (
     <div className="flex flex-col h-full">
