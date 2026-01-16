@@ -1,19 +1,4 @@
-// import { Outlet } from 'react-router-dom';
-// import { AppSidebar } from './AppSidebar'; // adjust path if needed
 
-// export default function Layout() {
-//   return (
-//     <div className="flex h-screen w-screen overflow-hidden">
-//       <AppSidebar />
-//       <main className="flex-1 flex flex-col p-6 bg-gray-50 overflow-auto">
-//         <Outlet /> {/* This is where page content renders */}
-//       </main>
-//     </div>
-//   );
-// }
-
-
-// src/components/Layout.tsx
 import { Outlet } from 'react-router-dom';
 import { AppSidebar } from './AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'; // adjust alias if needed
